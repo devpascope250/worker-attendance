@@ -50,7 +50,6 @@ export  function Sidebar({ open, onClose, className }: SidebarProps) {
   const {
     mutateAsync: logoutUser,
     isPending,
-    isSuccess,
   } = useApiPost(["logout"], `/auth/logout`);
   // get current url and compare it with activeItem
   return (
