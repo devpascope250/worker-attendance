@@ -1230,6 +1230,7 @@ useEffect(() => {
             </Card>
           ) : (
             /* Existing Company Edit Form */
+           selectedCompany !== null &&
             <>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between">

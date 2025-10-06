@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { hashPassword } from "@/lib/auth";
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -30,6 +31,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     });
     if (existEmail) return NextResponse.json({ message: "Email already exist" }, { status: 400 })
 
+        if(data.password){
+            const password = await hashPassword(data.password);
+            data.password = password
+        }
     await prisma.user.update({
         where: {
             id: parseInt(id),
@@ -42,7 +47,11 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
             role: data.role,
             phone: data.phone,
             status: data.status,
+            password: data.password,
         },
     });
+
+
+    
     return NextResponse.json({ message: "Employee updated successfully" });
 }

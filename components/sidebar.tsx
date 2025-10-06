@@ -69,7 +69,7 @@ export  function Sidebar({ open, onClose, className }: SidebarProps) {
             <div className="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center mr-3">
               <span className="text-white font-bold text-lg">W</span>
             </div>
-            <h2 className="text-xl font-bold text-gray-800">WorkForce</h2>
+            <h2 className="text-xl font-bold text-gray-800">Dashboard</h2>
           </div>
           {/* Close button for mobile */}
           <button

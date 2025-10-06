@@ -4,14 +4,7 @@ import { useApi } from "@/lib/hooks/api-hooks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Plus,
-  User2,
-  Phone,
-  Briefcase,
-  Building,
-  X,
-} from "lucide-react";
+import { Plus, User2, Phone, Briefcase, Building, X } from "lucide-react";
 import { Company, CompanyType, Gender, Status, User } from "@prisma/client";
 import DataTable from "@/components/Datatables/DataTable";
 import Modal from "@/components/Modal";
@@ -42,21 +35,24 @@ export default function AdminDashboard() {
   const [isChangingStatusId, setIsChangingStatusId] = React.useState<
     string | null
   >(null);
-  const {
-    data: employeess,
-    refetch,
-  } = useApiQuery(["all-employees"], "/admin/employees");
-  const { data: companies } = useApiQuery<
-    Company[]
-  >(["all-companies"], "/admin/company/select");
+  const { data: employeess, refetch } = useApiQuery(
+    ["all-employees"],
+    "/admin/employees"
+  );
+  const { data: companies } = useApiQuery<Company[]>(
+    ["all-companies"],
+    "/admin/company/select"
+  );
   const { mutateAsync: addEmployee } = useApiPost(
     ["add-user"],
     "/admin/employees"
   );
   const [selectedEmployee, setSelectedEmployee] =
     React.useState<Employees | null>(null);
-  const { mutateAsync: deleteEmployee } =
-    useApiDelete(["delete-user"], "/admin/employees");
+  const { mutateAsync: deleteEmployee } = useApiDelete(
+    ["delete-user"],
+    "/admin/employees"
+  );
   const { mutateAsync: updateEmploye } = useApiPut(
     ["update-user"],
     "/admin/employees/" + selectedEmployee?.id
@@ -359,10 +355,8 @@ export default function AdminDashboard() {
     setSelectedEmployee(null);
   };
 
-
   return (
     <>
-
       {/* Recent Activity */}
       <Card className="border-0 shadow-sm mb-10">
         <DataTable
@@ -434,6 +428,7 @@ export default function AdminDashboard() {
               options: [{ label: "Worker", value: "Worker" }],
               colSpan: selectedEmployee ? 2 : 1,
             },
+
             ...(selectedEmployee
               ? []
               : [
@@ -448,6 +443,13 @@ export default function AdminDashboard() {
                     })),
                   },
                 ]),
+            {
+              name: "password",
+              type: "password",
+              label: "Password",
+              required: selectedEmployee ? false : true,
+              colSpan: 2,
+            },
           ]}
           initialValues={{
             firstName: selectedEmployee?.firstName || "",
@@ -458,6 +460,7 @@ export default function AdminDashboard() {
             role: selectedEmployee?.role || "",
             status: (selectedEmployee?.status as Status) || Status.Active,
             companyId: selectedEmployee?.company || "",
+            password: ""
           }}
           onSubmit={async (values) => {
             if (selectedEmployee) {

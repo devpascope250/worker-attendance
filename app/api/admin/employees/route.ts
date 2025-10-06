@@ -75,7 +75,13 @@ export async function POST(request: NextRequest) {
         },
     });
     if (emailExist) return NextResponse.json({ message: "Email already exist" }, { status: 400 });
-    const password = await hashPassword('@12344fgfff');
+    if(data.password){
+        const password = await hashPassword(data.password);
+        data.password = password;
+    }else{
+        const password = await hashPassword('@12344fgfff');
+        data.password = password;
+    }
     await prisma.$transaction(async (tx) => {
         const company = await tx.company.findUnique({
             where: {
@@ -93,7 +99,7 @@ export async function POST(request: NextRequest) {
                 role: data.role,
                 phone: data.phone,
                 status: data.status,
-                password: password,
+                password: data.password,
             },
         });
 
